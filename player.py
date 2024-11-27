@@ -5,7 +5,15 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.current_room = None
-    
+        self.history = [] #ajout de l'historique des pièces visitées
+
+    def get_history(self): # fonction qui regarde si tous les endroits d'une pièce ont été fouillés
+        for eltf in self.floors:
+            for eltr in self.rooms:
+                for i in range len(self.srooms):
+                    if self.rooms[i]=='':
+                        print "Vous avez déjà exploré : " + str(eltr)
+
     # Define the move method.
     def move(self, direction):
         # Get the next room from the exits dictionary of the current room.
