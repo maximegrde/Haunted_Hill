@@ -25,7 +25,7 @@ class Game:
         self.commands["help"] = help
         quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
         self.commands["quit"] = quit
-        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
+        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O, ouest, OUEST, Ouest)", Actions.go, 1)
         self.commands["go"] = go
         
         # Setup rooms
@@ -42,11 +42,15 @@ class Game:
         self.rooms.append(swamp)
         castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
         self.rooms.append(castle)
+        parkinggauche = Room("Parking1", "dans un parking. Vous entendez le bruit des klaxons parce que vous avez accidentellement déclenché l'alarme d'une voiture.")
+        self.rooms.append(parkinggauche)
+        parkingdroit = Room("Parking2", "dans un parking. Vous entendez le bruit des klaxons parce que vous avez accidentellement déclenché l'alarme d'une voiture.")
+        self.rooms.append(parkingdroit)
 
         # Create exits for rooms
 
-        forest.exits = {"N" : cave, "E" : tower, "S" : castle, "O" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : swamp, "O" : forest}
+        forest.exits = {"N" : cave, "E" : tower, "S" : castle, "O" : parkinggauche}
+        tower.exits = {"N" : cottage, "E" : parkingdroit, "S" : swamp, "O" : forest}
         cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
         cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
         swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}

@@ -2,6 +2,7 @@
 
 # Import modules
 
+from floor import Floor
 from room import Room
 from player import Player
 from command import Command
@@ -12,9 +13,9 @@ class Game:
     # Constructor
     def __init__(self):
         self.finished = False
-        self.floors = []
-        self.rooms = []
-        self.srooms = []
+        self.floors = {}
+        self.rooms = {}
+        self.srooms = {}
         # self.floors = {"Sous-sol":{"Pièce 1":{"générateur":{câble, bouton de démarrage}}}, "étage 1" : {"Pièce 1":{"générateur":{câble, bouton de démarrage}}}, etc }
         self.commands = {}
         self.player = None
@@ -37,31 +38,48 @@ class Game:
         # Setup floors
 
         sous_sol = Floor("Sous-sol", "Vous arrivez dans le sous-sol du manoir.")
-        self.floors.append(sous_sol)
+        salle_cachee = Room("Salle cachée", "Vous traversez le mur que vous venez de détruire et vous arrivez dans une pièce sombre.")
+        tiroir = SRoom("Tiroir","Il s'agit d'un tiroir que vous pouvez ouvrir.")
+        floors[self.floors(sous_sol)]=self.rooms #ajout du sous-sol dans le dict floors 
+        floors[0][0]=self.salle_cachee #ajout de la salle cachée au sous-sol
+        floors[0][0][0]=self.tiroir #ajout du tiroir dans la salle cachée
+
+        floors[0][1]=self.cachee
+        floors[0][2]=self.monstres
+        floors[0][3]=self.generateur
+        floors[0][4]=self.fissures
+        floors[0][5]=self.cle
+        floors[0][6]=self.souvenir
+        floors[0][7]=self.essence
+
         rez_de_chaussee = Floor("Rez-de-chaussée", "Vous arrivez dans le rez-de-chaussée.")
-        self.floors.append(rez_de_chaussee)
+        floors+=self.floors(rez_de_chaussée)
         premier_etage = Floor("Premier étage", "Vous arrivez au premier étage.")
-        self.floors.append(premier_etage)
+        floors+=self.floors(premier_etage)
         deuxieme_etage = Floor("Deuxième étage", "Vous arrivez au deuxième étage.")
-        self.floors.append(deuxieme_etage)
+        floors+=self.floors(deuxieme_etage)
         toit = Floor("Toit", "Vous arrivez sur le toit.")
-        self.floors.append(toit)
+        floors+=self.floors(toit)
         
         # Setup rooms
 
-        # Rooms du floor -1
-        forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
+        # Couloirs pour chaque étage (créer un fichier contenant les couloirs de chaque étage)
+        couloirsol = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
         self.rooms.append(forest)
-        tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
+        couloirrdc = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
         self.rooms.append(tower)
-        cave = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
+        couloirpremier = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
         self.rooms.append(cave)
-        cottage = Room("Cottage", "dans un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
+        couloirdeuxieme = Room("Cottage", "dans un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
         self.rooms.append(cottage)
-        swamp = Room("Swamp", "dans un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
+        couloirtoit = Room("Swamp", "dans un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
         self.rooms.append(swamp)
-        castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
-        self.rooms.append(castle)
+
+        couloirsol.exits = {"N" : cave, "E" : tower, "S" : castle, "O" : None}
+        couloirrdc.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
+        couloirpremier.exits = {"N" : cottage, "E" : None, "S" : swamp, "O" : forest}
+        couloirdeuxieme.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
+        couloirtoit.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
 
         # Rooms du floor 0
         # Rooms du floor 1
@@ -71,6 +89,12 @@ class Game:
 
         # Setup sous-rooms (endroits à fouiller dans chaque pièce)
         
+
+
+
+
+
+
 
         # Create exits for floors, rooms, srooms
 
