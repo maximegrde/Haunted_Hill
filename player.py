@@ -2,10 +2,10 @@
 class Player():
 
     # Define the constructor.
-    def __init__(self, name):
+    def __init__(self, name, history=[]):
         self.name = name
         self.current_room = None
-        self.history = [] #ajout de l'historique des pièces visitées
+        self.history = history
 
     # def get_history(self): # fonction qui regarde si tous les endroits d'une pièce ont été fouillés
     #     for eltf in self.floors:
@@ -28,5 +28,16 @@ class Player():
         self.current_room = next_room
         print(self.current_room.get_long_description())
         return True
+
+    def get_history(self,game, list_of_words,number_of_parameters):
+        if self.current_room not in self.history:
+            history.append(self.current_room)
+        print("\nVous avez déjà visité les pièces suivantes :\n")
+        for elt in self.history:
+            print("- "+str(elt)+"\n")
+        return True
+
+
+
 
     

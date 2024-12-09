@@ -17,7 +17,7 @@ class Game:
         self.player = None
     
     # Setup the game
-    def setup(self):
+    def setup(self): 
 
         # Setup commands
 
@@ -27,7 +27,9 @@ class Game:
         self.commands["quit"] = quit
         go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O, ouest, OUEST, Ouest)", Actions.go, 1)
         self.commands["go"] = go
-        
+        history = Command("history", " : consulter l'historique des pièces visitées", Player.get_history, 0) 
+        self.commands["history"] = history
+
         # Setup rooms
 
         forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
