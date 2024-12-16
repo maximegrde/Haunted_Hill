@@ -1,11 +1,14 @@
+from item import Item
+
 # Define the Player class.
 class Player():
 
     # Define the constructor.
-    def __init__(self, name, history=[]):
+    def __init__(self, name, history=[], player_inventory={}):
         self.name = name
         self.current_room = None
         self.history = history
+        self.player_inventory = player_inventory
 
     # Define the move method.
     def move(self, direction):
@@ -36,6 +39,8 @@ class Player():
         for elt in game.player.history:
             print("- "+str(elt.name)+"\n")
         return True
+
+
 
 
 

@@ -18,6 +18,7 @@ MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
 from player import *
 #player_history = Player("player_history")
 from room import Room
+from item import Item
 
 class Actions:
 
@@ -144,10 +145,25 @@ class Actions:
     def history(game, list_of_words,number_of_parameters): #game en argument donne accès à tout dans le fichier game
         next_room = game.player.current_room #on va chercher l'initialisation de current_room dans game
         if game.player.current_room not in game.player.history:
-            game.player.history.append(game.player.current_room) #Player().current_room <=> player_history.current_room 
+            game.player.history.append(game.player.current_room) 
         print("\nVous avez déjà visité les pièces suivantes :\n")
         for elt in game.player.history:
             print("- "+str(elt.name)+"\n")
         return True
+
+    def inventory(game, list_of_words,number_of_parameters):
+        print("\nVotre inventaire contient :\n")
+        for item in game.player.inventory:
+            print("- "+str(item.name)+ " : " + str(item.description) + " de " + str(item.weight) + " kg" +"\n")
+        return True
+
+    
+    def look(game, list_of_words,number_of_parameters):
+        print("\nCette pièce contient :\n")
+        for item in game.current_room.room_inventory:
+            if room_inventory=={}:
+                print("\n Cette pièce est vide...\n")
+            else:
+                print("- "+str(item.name)+ " : " + str(item.description) + " de " + str(item.weight) + " kg" +"\n")
 
 

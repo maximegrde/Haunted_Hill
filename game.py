@@ -6,6 +6,7 @@ from room import Room
 from player import Player
 from command import Command
 from actions import Actions
+from item import Item
 
 class Game:
 
@@ -29,11 +30,19 @@ class Game:
         self.commands["go"] = go
         history = Command("history", " : consulter l'historique des pièces visitées", Actions.history, 0) 
         self.commands["history"] = history
+        inventory = Command("inventory", " : consulter l'inventaire du joueur", Actions.inventory, 0)
+        self.commands["inventory"] = inventory
+        look = Command("inventory_room", " : consulter l'inventaire de la pièce visitée", Actions.look, 0)
+        self.commands["inventory_room"] = look
 
         # Setup rooms
 
         forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
         self.rooms.append(forest)
+        sword = Item("Sword","Une épée banal",50)
+        shield = Item("Shield","Une bouclière de fer", 90)
+        forest.room_inventory.add(sword) #ajout d'un objet dans l'inventaire de la forêt
+        forest.room_inventory.add(shield) #ajout d'un objet dans l'inventaire de la forêt
         tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
         self.rooms.append(tower)
         cave = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
@@ -58,10 +67,11 @@ class Game:
         swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
         castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
 
-        # Setup player and starting room
+        # Setup player+inventory and starting room
 
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = swamp
+        self.player.inventory = {sword : 50, shield : 90}
 
     # Play the game
     def play(self):
