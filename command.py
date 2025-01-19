@@ -1,3 +1,5 @@
+""""institue les commandes"""
+
 ########## Création des commandes utilisant les fonctions dans la classe Actions ##########
 
 class Command: # Code de M.Courivaud
