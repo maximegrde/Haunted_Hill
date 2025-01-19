@@ -1,20 +1,20 @@
-# This file contains the Command class.
+# Ce fichier contient la classe Commande.
 
 class Command:
     """
-    This class represents a command. A command is composed of a command word, a help string, an action and a number of parameters.
+    Cette classe représente une commande. Une commande est composée d'un mot de commande, d'une chaîne d'aide, d'une action et d'un nombre de paramètres.
 
-    Attributes:
-        command_word (str): The command word.
-        help_string (str): The help string.
-        action (function): The action to execute when the command is called.
-        number_of_parameters (int): The number of parameters expected by the command.
+    Attributs :
+        command_word (str) : Le mot de commande.
+        help_string (str) : La chaîne d'aide.
+        action (function) : L'action à exécuter lorsque la commande est appelée.
+        number_of_parameters (int) : Le nombre de paramètres attendus pour la commande.
 
-    Methods:
-        __init__(self, command_word, help_string, action, number_of_parameters) : The constructor.
-        __str__(self) : The string representation of the command.
+    Méthodes :
+        __init__(self, command_word, help_string, action, number_of_parameters) : Le constructeur.
+        __str__(self) : La représentation sous forme de chaîne de la commande.
 
-    Examples:
+    Exemples :
 
     >>> from actions import go
     >>> command = Command("go", "Permet de se déplacer dans une direction.", go, 1)
@@ -29,17 +29,26 @@ class Command:
 
     """
 
-    # The constructor.
     def __init__(self, command_word, help_string, action, number_of_parameters):
+        """
+        Le constructeur de la classe Command.
+
+        Args:
+            command_word (str) : Le mot de commande.
+            help_string (str) : La chaîne d'aide.
+            action (function) : L'action à exécuter lorsque la commande est appelée.
+            number_of_parameters (int) : Le nombre de paramètres attendus pour la commande.
+        """
         self.command_word = command_word
         self.help_string = help_string
         self.action = action
         self.number_of_parameters = number_of_parameters
-    
-    # The string representation of the command.
+
     def __str__(self):
-        return  self.command_word \
-                + self.help_string
-    
+        """
+        La représentation sous forme de chaîne de la commande.
 
-
+        Retourne :
+            str : Une chaîne combinant le mot de commande et la chaîne d'aide.
+        """
+        return f"{self.command_word} {self.help_string}"
