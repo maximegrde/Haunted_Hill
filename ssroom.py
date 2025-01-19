@@ -1,3 +1,5 @@
+"""institue ssroom"""
+
 class SSRoom:
     def __init__(self, name, description=''):
         self.name = name
@@ -6,3 +8,4 @@ class SSRoom:
 
     def get_long_description_ssroom(self):
         return f"\n{self.description}\n"
+
