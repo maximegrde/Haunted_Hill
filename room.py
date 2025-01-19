@@ -1,3 +1,5 @@
+"""institue les rooms"""
+
 class Room: #création des objets/classes pièce, ss-pièce et objet
     def __init__(self, name, description=''):
         self.name = name
