@@ -1,6 +1,6 @@
-# Description: Game class
+# Description : Classe Jeu
 
-# Import modules
+# Importer les modules
 
 from room import Room
 from player import Player
@@ -8,109 +8,61 @@ from command import Command
 from actions import Actions
 from item import Item
 
-class Game:
+class Jeu:
+    """
+    Cette classe représente le jeu d'aventure.
 
-    # Constructor
+    Attributs :
+        finished (bool) : Indique si le jeu est terminé.
+        rooms (list) : Liste des pièces du jeu.
+        commands (dict) : Dictionnaire des commandes disponibles.
+        player (Player) : L'objet représentant le joueur.
+
+    Méthodes :
+        setup(self) : Configure le jeu, les commandes et les pièces.
+        play(self) : Lance et gère le jeu.
+        process_command(self, command_string) : Traite la commande entrée par le joueur.
+        print_welcome(self) : Affiche le message de bienvenue.
+    """
+
     def __init__(self):
+        """
+        Constructeur de la classe Jeu.
+
+        Initialise les attributs du jeu.
+        """
         self.finished = False
         self.rooms = []
         self.commands = {}
         self.player = None
-    
-    # Setup the game
-    def setup(self): 
 
-        # Setup commands
+    def setup(self):
+        """
+        Configure le jeu, les commandes et les pièces.
+        """
+        # Configurer les commandes
+        aide = Command("help", " : afficher cette aide", Actions.help, 0)
+        self.commands["help"] = aide
+        quitter = Command("quit", " : quitter le jeu", Actions.quit, 0)
+        self.commands["quit"] = quitter
+        aller = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O, ouest, OUEST, Ouest)", Actions.go, 1)
+        self.commands["go"] = aller
+        historique = Command("history", " : consulter l'historique des pièces visitées", Actions.history, 0)
+        self.commands["history"] = historique
+        inventaire = Command("inventory", " : consulter l'inventaire du joueur", Actions.inventory, 0)
+        self.commands["inventory"] = inventaire
+        regarder = Command("inventory_room", " : consulter l'inventaire de la pièce visitée", Actions.look, 0)
+        self.commands["inventory_room"] = regarder
 
-        help = Command("help", " : afficher cette aide", Actions.help, 0)
-        self.commands["help"] = help
-        quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
-        self.commands["quit"] = quit
-        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O, ouest, OUEST, Ouest)", Actions.go, 1)
-        self.commands["go"] = go
-        history = Command("history", " : consulter l'historique des pièces visitées", Actions.history, 0) 
-        self.commands["history"] = history
-        inventory = Command("inventory", " : consulter l'inventaire du joueur", Actions.inventory, 0)
-        self.commands["inventory"] = inventory
-        look = Command("inventory_room", " : consulter l'inventaire de la pièce visitée", Actions.look, 0)
-        self.commands["inventory_room"] = look
-
-        # Setup rooms
-
-        forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
-        self.rooms.append(forest)
-        sword = Item("Sword","Une épée banal",50)
-        shield = Item("Shield","Une bouclière de fer", 90)
-        forest.room_inventory.add(sword) #ajout d'un objet dans l'inventaire de la forêt
-        forest.room_inventory.add(shield) #ajout d'un objet dans l'inventaire de la forêt
-        tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
-        self.rooms.append(tower)
-        cave = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
-        self.rooms.append(cave)
-        cottage = Room("Cottage", "dans un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
-        self.rooms.append(cottage)
-        swamp = Room("Swamp", "dans un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
-        self.rooms.append(swamp)
-        castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
-        self.rooms.append(castle)
-        parkinggauche = Room("Parking1", "dans un parking. Vous entendez le bruit des klaxons parce que vous avez accidentellement déclenché l'alarme d'une voiture.")
-        self.rooms.append(parkinggauche)
-        parkingdroit = Room("Parking2", "dans un parking. Vous entendez le bruit des klaxons parce que vous avez accidentellement déclenché l'alarme d'une voiture.")
-        self.rooms.append(parkingdroit)
-
-        # Create exits for rooms
-
-        forest.exits = {"N" : cave, "E" : tower, "S" : castle, "O" : parkinggauche}
-        tower.exits = {"N" : cottage, "E" : parkingdroit, "S" : swamp, "O" : forest}
-        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
-        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
-        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
-
-        # Setup player+inventory and starting room
-
-        self.player = Player(input("\nEntrez votre nom: "))
-        self.player.current_room = swamp
-        self.player.inventory = {sword : 50, shield : 90}
-
-    # Play the game
-    def play(self):
-        self.setup()
-        self.print_welcome()
-        # Loop until the game is finished
-        while not self.finished:
-            # Get the command from the player
-            self.process_command(input("> "))
-        return None
-
-    # Process the command entered by the player
-    def process_command(self, command_string) -> None:
-
-        # Split the command string into a list of words
-        list_of_words = command_string.split(" ")
-
-        command_word = list_of_words[0]
-
-        # If the command is not recognized, print an error message
-        if command_word not in self.commands.keys():
-            print(f"\nCommande '{command_word}' non reconnue. Entrez 'help' pour voir la liste des commandes disponibles.\n")
-        # If the command is recognized, execute it
-        else:
-            command = self.commands[command_word]
-            command.action(self, list_of_words, command.number_of_parameters)
-
-    # Print the welcome message
-    def print_welcome(self):
-        print(f"\nBienvenue {self.player.name} dans ce jeu d'aventure !")
-        print("Entrez 'help' si vous avez besoin d'aide.")
-        #
-        print(self.player.current_room.get_long_description())
-    
-
-def main():
-    # Create a game object and play the game
-    Game().play()
-    
-
-if __name__ == "__main__":
-    main()
+        # Configurer les pièces
+        foret = Room("Forêt", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
+        self.rooms.append(foret)
+        epee = Item("Epée", "Une épée banale", 50)
+        bouclier = Item("Bouclier", "Une bouclière de fer", 90)
+        foret.room_inventory.add(epee)  # ajout d'un objet dans l'inventaire de la forêt
+        foret.room_inventory.add(bouclier)  # ajout d'un objet dans l'inventaire de la forêt
+        tour = Room("Tour", "dans une immense tour en pierre qui s'élève au-dessus des nuages.")
+        self.rooms.append(tour)
+        grotte = Room("Grotte", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
+        self.rooms.append(grotte)
+        chalet = 
